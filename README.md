@@ -20,6 +20,10 @@ backlight-level %  Sets backlight from 1% to 100%
 
 Example:
 
-pkexec lxqt-backlight 10 %       Sets backlight level until 10%.
+Sets backlight level until 10%:
 
-pkexec lxqt-backlight 10         Sets backlight level to 10.
+pkexec lxqt-backlight 10 %       
+
+Sets backlight level to 10:
+
+pkexec lxqt-backlight 10         
