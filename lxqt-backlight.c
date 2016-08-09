@@ -44,6 +44,8 @@ static int read_backlight(char *driver)
     char path[1024];
     sprintf(path, "/sys/class/backlight/%s/actual_brightness", driver);
     FILE *in = fopen(path, "r");
+    if( in == NULL )
+        return -1;
     int value;
     int ok = fscanf(in, "%d", &value);
     fclose(in);
@@ -57,8 +59,10 @@ static int read_max_backlight(char *driver)
 {
     char path[1024];
     sprintf(path, "/sys/class/backlight/%s/max_brightness", driver);
-    FILE *in = fopen(path, "r");
     int value;
+    FILE *in = fopen(path, "r");
+    if( in == NULL )
+        return -1;
     int ok = fscanf(in, "%d", &value);
     fclose(in);
     if( ok == EOF ) {
@@ -95,6 +99,8 @@ static char *get_driver()
             driver = dp->d_name;
             sprintf(path, "/sys/class/backlight/%s/type", driver);
             FILE *in = fopen(path, "r");
+            if( in == NULL )
+                continue;
             int ok = fscanf(in, "%s", type);
             fclose(in);
             if( ok != EOF ) {
