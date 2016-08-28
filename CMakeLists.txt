@@ -1,11 +1,6 @@
 cmake_minimum_required( VERSION 2.6 )
 project(lxqt-backlight)
 
-
-set(C_FILES
-    lxqt-backlight.c
-)
-
 set(POLKIT_FILES
     ${CMAKE_BINARY_DIR}/org.lxqt.backlight.pkexec.policy
 )
@@ -13,7 +8,6 @@ set(POLKIT_FILES
 # Config file
 configure_file ( org.lxqt.backlight.pkexec.policy.in org.lxqt.backlight.pkexec.policy )
 
-cmake_minimum_required( VERSION 2.6 )
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -27,12 +21,11 @@ endif (NOT CMAKE_BUILD_TYPE)
 
 set(APP_SHARE_DIR share/lxqt/${PROJECT_NAME})
 
+add_subdirectory(liblxqtbacklight_backend)
+add_subdirectory(lxqtbacklight_backend)
+add_subdirectory(liblxqtbacklight)
+add_subdirectory(lxqt-backlight-gui)
 
-add_executable(${PROJECT_NAME}
-    ${C_FILES}
-)
-
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 install(FILES ${POLKIT_FILES} DESTINATION /usr/share/polkit-1/actions/)
 
 # building tarball with CPack -------------------------------------------------

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="47.99999999999999" height="47.99999999999999" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <metadata id="metadata7">image/svg+xml</metadata>
+ <defs>
+  <linearGradient id="svg_12">
+   <stop stop-color="#ffff00" offset="0"/>
+   <stop stop-color="#0000ff" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <circle id="svg_1" r="24" cy="24" cx="24" stroke-width="0" stroke="#0000ff" fill="#007fff"/>
+  <circle id="svg_2" r="10" cy="24" cx="24" stroke-width="0" stroke="#ffff00" fill="url(#svg_12)"/>
+  <circle id="svg_3" r="2" cy="8" cx="24" stroke-width="0" stroke="#ffff00" fill="url(#svg_12)"/>
+  <circle id="svg_4" r="2" cy="40" cx="24" stroke-width="0" stroke="#ffff00" fill="url(#svg_12)"/>
+  <circle id="svg_5" r="2" cx="8" cy="24" stroke-width="0" stroke="#ffff00" fill="url(#svg_12)"/>
+  <circle id="svg_6" r="2" cx="40" cy="24" stroke-width="0" stroke="#ffff00" fill="url(#svg_12)"/>
+  <circle id="svg_7" r="2" cx="12.686" cy="12.686" stroke-width="0" stroke="#ffff00" fill="url(#svg_12)"/>
+  <circle id="svg_8" r="2" cy="12.686" cx="35.313" stroke-width="0" stroke="#ffff00" fill="url(#svg_12)"/>
+  <circle id="svg_9" r="2" cy="35.313" cx="35.313" stroke-width="0" stroke="#ffff00" fill="url(#svg_12)"/>
+  <circle id="svg_10" r="2" cx="12.686" cy="35.313" stroke-width="0" stroke="#ffff00" fill="url(#svg_12)"/>
+ </g>
+</svg>

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Backlight Settings
+Exec=lxqt-backlight-gui
+Terminal=false
+Type=Application
+Icon=lxqtbacklight

@@ -23,19 +23,23 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "../liblxqtbacklight_backend/lxqtbacklight_backend.h"
+
 #define True 1
 #define False 0
 
 static void set_backlight(char *driver, int value)
 {
-    char path[1024];
-    sprintf(path, "/sys/class/backlight/%s/brightness", driver);
-    FILE *out = fopen(path, "w");
-    if( out != NULL ) {
-        fprintf(out, "%d", value);
-        fclose(out);
-    } else {
-        perror("Couldn't open /sys/class/backlight/driver/brightness");
+    if(value>0) {
+        char path[1024];
+        sprintf(path, "/sys/class/backlight/%s/brightness", driver);
+        FILE *out = fopen(path, "w");
+        if( out != NULL ) {
+            fprintf(out, "%d", value);
+            fclose(out);
+        } else {
+            perror("Couldn't open /sys/class/backlight/driver/brightness");
+        }
     }
 }
 
@@ -71,67 +75,9 @@ static int read_max_backlight(char *driver)
     return read_int(path);
 }
 
-typedef enum {FIRMWARE, PLATFORM, RAW, OTHER, N_BACKLIGHT} BackligthTypes;
-
 static char *get_driver()
 {
-    DIR *dirp;
-    struct dirent *dp;
-    
-    char *drivers[N_BACKLIGHT];
-    char *driver;
-    BackligthTypes n;
-    char path[1024], type[1024];
-    
-    for(n=0;n<N_BACKLIGHT;n++)
-        drivers[n] = NULL;
-
-    if ((dirp = opendir("/sys/class/backlight")) == NULL) {
-        perror("Couldn't open /sys/class/backlight");
-        return NULL;
-    }
-
-    do {
-        errno = 0;
-        if ((dp = readdir(dirp)) != NULL) {
-            if( !strcmp(dp->d_name, ".") || !strcmp(dp->d_name, "..") )
-                continue;
-            driver = dp->d_name;
-            sprintf(path, "/sys/class/backlight/%s/type", driver);
-            FILE *in = fopen(path, "r");
-            if( in == NULL )
-                continue;
-            int ok = fscanf(in, "%s", type);
-            fclose(in);
-            if( ok != EOF ) {
-                // firmware control should be preferred to platform control should be preferred to raw control.
-                if( ! strcmp("firmware", type) ) {
-                    drivers[FIRMWARE] = strdup(driver);
-                    break;
-                } else if( ! strcmp("platform", type) )
-                    drivers[PLATFORM] = strdup(driver);
-                else if( ! strcmp("raw", type) )
-                    drivers[RAW] = strdup(driver);
-                else // Only, firmware, platform and raw are defined, but...
-                    drivers[OTHER] = strdup(driver);
-            }
-        }
-    } while (dp != NULL);
-
-    closedir(dirp);
-
-    if (errno != 0)
-        perror("Error reading directory");    
-    
-    driver = NULL;
-    for(n=0;n<N_BACKLIGHT;n++) {
-        if( drivers[n] != NULL && driver == NULL )
-            driver = drivers[n];
-        else
-            free(drivers[n]);
-    }
-
-    return driver;
+    return lxqt_backlight_backend_get_driver();
 }
 
 
@@ -207,6 +153,20 @@ static void decreases_blacklight()
     free(driver);
 }
 
+static void set_backlight_from_stdin()
+{
+    char *driver = get_driver();
+    int ok = True, value;
+    int max_value = read_max_backlight(driver);
+    while(ok && !feof(stdin)) {
+        ok = scanf("%d", &value);
+        if( ok != EOF && value > 0 && value <= max_value) {
+            set_backlight(driver, value);
+        }
+    }
+    free(driver);
+}
+
 static void help(char *argv0)
 {
     printf("%s [backlight-level [ %% ]] [--help]\n"
@@ -214,6 +174,7 @@ static void help(char *argv0)
         "--show             Shows actual brightness level.\n"
         "--inc              Increases actual brightness level.\n"
         "--dec              Decreases actual brightness level.\n"
+        "--stdin            Read backlight value from stdin\n"
         "backlight-level    Sets backlight\n"
         "backlight-level %%  Sets backlight from 1%% to 100%%\n"
         "This tool changes screen backlight.\n"
@@ -240,6 +201,9 @@ int main(int argc, char *argv[])
             return 0;
         } if( !strcmp(argv[n], "--dec") ) {
             decreases_blacklight();
+            return 0; 
+        } if( !strcmp(argv[n], "--stdin") ) {
+            set_backlight_from_stdin();
             return 0;
         } else if ( argv[n][0] != '-' ) {
             value = atoi(argv[1]);
