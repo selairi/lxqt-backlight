@@ -16,6 +16,42 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+/********************************************************************************
+ *    This library uses Linux /sys/class/backlight files to read and change the 
+ *    backlight level.
+ *    
+ *    If screen backlight can be controlled, the Linux kernel will show inside 
+ *    /sys/class/backlight directory one or more directories. Each directory has
+ *    got the following files:
+ *        /sys/class/backlight/driver/max_brightness
+ *        /sys/class/backlight/driver/actual_brightness
+ *        /sys/class/backlight/driver/brightness
+ *        /sys/class/backlight/driver/type
+ *    
+ *    The "max_brightness" file contains the maximum value that can be set to the
+ *    backlight level.
+ *    
+ *    In "brightness" file you can write the value of backlight and the Linux 
+ *    kernel will set that value.
+ *    
+ *    You must read actual backlight level from "actual_brightness" file. Never
+ *    read the backlight level from "brightness" file.
+ *    
+ *    The "type" file is the type of control and it can be:
+ *        firmware
+ *        platform 
+ *        raw
+ *    The firmware control should be preferred to platform control. The platform
+ *    control should be preferred to raw control.        
+ *    If there are several directories in /sys/class/backlight/, you should use
+ *    the directory which its "type" file has got the "firmware" value.
+ *    
+ *    In order to write in /sys/class/backlight/driver/brightness file root
+ *    permissions are needed. This library calls to a command line tool called 
+ *    "lxqtbacklight_backend". "lxqtbacklight_backend" has a policy in Polkit 
+ *    in order to write in /sys/class/backlight/driver/brightness file.
+ *******************************************************************************/
+
 #include <stdio.h>
 #include <dirent.h>
 #include <errno.h>
