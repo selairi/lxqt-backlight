@@ -12,44 +12,30 @@ The library is written in C and it has a C++ wrapper for Qt5.
 The C library has got 4 functions:
 
 
-int lxqt_backlight_backend_get();
-
-int lxqt_backlight_backend_get_max();
-
-FILE *lxqt_backlight_backend_get_write_stream();
-
-char *lxqt_backlight_backend_get_driver();
+    int lxqt_backlight_backend_get();
+    int lxqt_backlight_backend_get_max();
+    FILE *lxqt_backlight_backend_get_write_stream();
+    char *lxqt_backlight_backend_get_driver();
 
 
 This is an example:
 
 
     #include <lxqtbacklight_backend.h>
-
+    
     ...
     
     // Get maximun value of backlight
-
     int max_backlight = lxqt_backlight_backend_get_max();
-
     if(max_backlight<0)
-
         return; // Backlight can not be controlled.
-
     // Get actual backlight level
-
     int value = lxqt_backlight_backend_get();
-
     // Increases actual backlight level in 5 units
-
     FILE *fout = lxqt_backlight_backend_write_stream();
-
     fprintf(fout, "%d\n", value+5);
-
     fflush(fout);
-
     // ... Do something ...
-
     fclose(fout);
 
 The "lxqt_backlight_backend_get_driver" function returns the backlight-control directory in /sys/class/backlight.
@@ -58,21 +44,21 @@ The "lxqt_backlight_backend_get_driver" function returns the backlight-control d
 
 This is a simple command line tool to read and change backlight level.
 
-lxqtbacklight_backend [backlight-level [ % ]] [--help]
+    lxqtbacklight_backend [backlight-level [ % ]] [--help]
 
---help             Shows this message.
+    --help             Shows this message.
 
---show             Shows actual brightness level.
+    --show             Shows actual brightness level.
 
---inc              Increases actual brightness level.
+    --inc              Increases actual brightness level.
 
---dec              Decreases actual brightness level.
+    --dec              Decreases actual brightness level.
 
---stdin            Read backlight value from stdin.
+    --stdin            Read backlight value from stdin.
 
-backlight-level    Sets backlight
+    backlight-level    Sets backlight
 
-backlight-level %  Sets backlight from 1% to 100%
+    backlight-level %  Sets backlight from 1% to 100%
 
 
 Examples:
@@ -94,27 +80,16 @@ It defines LXQtBacklight class. This class contains the following important meth
 
 
     #include <lxqtbacklight.h>
-    
     class LXQtBacklight:public QObject
-    
     {
-    
         public:    
-    
             LXQtBacklight(QObject *parent = 0);
-    
             ~LXQtBacklight();
-            
             bool isBacklightAvailable();
-    
             void setBacklight(int value);
-    
             int getBacklight();
-    
             int getMaxBacklight();
-            
         signals:
-    
             void backlightChanged(int value);
     }
     
