@@ -65,11 +65,11 @@ Examples:
 
 Sets backlight level to 10%:
 
-    pkexec lxqtbacklight_backend 10 %       
+    pkexec lxqt-backlight_backend 10 %       
 
 Sets backlight level to 10:
 
-    pkexec lxqtbacklight_backend 10         
+    pkexec lxqt-backlight_backend 10         
 
 
 # The C++ library
