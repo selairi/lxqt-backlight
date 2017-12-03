@@ -40,11 +40,11 @@ This is an example:
 
 The "lxqt_backlight_backend_get_driver" function returns the backlight-control directory in /sys/class/backlight.
 
-# lxqtbacklight_backend: The command line tool
+# lxqt-backlight_backend: The command line tool
 
 This is a simple command line tool to read and change backlight level.
 
-    lxqtbacklight_backend [backlight-level [ % ]] [--help]
+    lxqt-backlight_backend [backlight-level [ % ]] [--help]
 
     --help             Shows this message.
 
