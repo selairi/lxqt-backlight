@@ -4,3 +4,4 @@ Exec=lxqt-backlight-gui
 Terminal=false
 Type=Application
 Icon=lxqtbacklight
+Categories=Qt;Utility;Settings;DesktopSettings;LXQt;
